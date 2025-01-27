@@ -10,6 +10,12 @@ Para que seja possível rodar essa aplicação é necessário atender alguns req
 - Gradle 8.8+
 - PostgreSQL 14+
 
+# Arquivos de documentação
+
+- Transactions.postman_collection.json (Com todas as requisições para a API)
+- UML.jpg (Com a estrutura do banco de dados)
+- Pismo_Back_Teste_3.0_(1).pdf (Teste recebido)
+
 # Compilando para IDEAs como IntelliJ
 
 Assim como todo projeto *Gradle*, é necessário primeiramente realizarmos a geração dos fontes. Conforme o exemplo abaixo:
