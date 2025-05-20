@@ -1,5 +1,7 @@
 package br.com.pismo.transactions.domain.model;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -22,11 +24,16 @@ public class Account {
 
     private String level;
 
+    private BigDecimal avaliableCreditLimit;
+
+    private static final String PAGAMENTO = "PAGAMENTO";
+
     private static final Random RANDOM = new Random();
 
-    public Account(){
+    public Account(BigDecimal creditLimit) {
         this.accountNumber = generateRandomAccountValues(5, 7);
         this.accountDigit = generateRandomAccountValues(1, 1);
+        this.avaliableCreditLimit = creditLimit;
         this.level = "SILVER";
     }
 
@@ -39,6 +46,15 @@ public class Account {
         }
 
         return sb.toString();
+    }
+
+    public boolean avaliableLimit(OperationType operationType, BigDecimal transactionAmount, List<Transaction> transactions){
+        BigDecimal balance = transactions.stream()
+            .map(Transaction::getAmount)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal avaliableAmount = avaliableCreditLimit.add(balance);
+        return (operationType.getDescription().equals(PAGAMENTO) || 
+                transactionAmount.compareTo(avaliableAmount) <= 0);
     }
     
 }

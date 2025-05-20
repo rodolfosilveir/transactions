@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.pismo.transactions.adapter.in.rest.request.CreateTransactionRequest;
 import br.com.pismo.transactions.domain.exception.NotFoundException;
+import br.com.pismo.transactions.domain.exception.UnavaliableCreditLimitException;
 import br.com.pismo.transactions.domain.model.Account;
 import br.com.pismo.transactions.domain.model.OperationType;
 import br.com.pismo.transactions.domain.model.Transaction;
@@ -41,6 +42,10 @@ public class TransactionService implements TransactionUC {
         
         OperationType operationType = operationTypePort.findById(request.getOperationTypeId())
             .orElseThrow(() -> new NotFoundException("Tipo de operação não encontrada"));
+
+        if(!account.avaliableLimit(operationType, request.getAmount(), this.getTransactions(account.getId()))){
+            throw new UnavaliableCreditLimitException("Limite de crédito indisponível");
+        }
 
         transactionPort.save(Transaction.create(account.getId(), operationType, request.getAmount()));
 

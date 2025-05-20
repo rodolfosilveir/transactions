@@ -6,11 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -67,7 +69,9 @@ class AccountServiceTest {
         Account accountMock = AccountMock.create(1, userMock.getId());
         when(accountPort.save(eq(userMock), any(Account.class))).thenReturn(accountMock);
 
-        CreateAccountRequest request = new CreateAccountRequest("12345678900");
+        CreateAccountRequest request = new CreateAccountRequest("12345678900", BigDecimal.valueOf(5000.00));
+
+        doNothing().when(userPort).save(userMock);
 
         Account account = accountService.create(request);
 
@@ -88,7 +92,7 @@ class AccountServiceTest {
             .thenThrow(DataIntegrityViolationException.class)
             .thenReturn(accountMock);
 
-        CreateAccountRequest request = new CreateAccountRequest("12345678900");
+        CreateAccountRequest request = new CreateAccountRequest("12345678900", BigDecimal.valueOf(5000.00));
 
         Account account = accountService.create(request);
 

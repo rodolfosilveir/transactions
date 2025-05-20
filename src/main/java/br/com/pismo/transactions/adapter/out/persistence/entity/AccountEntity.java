@@ -1,5 +1,6 @@
 package br.com.pismo.transactions.adapter.out.persistence.entity;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,12 +46,16 @@ public class AccountEntity {
     @Column(name = "level")
     private String level;
 
+    @Column(name = "avaliable_credit_limit")
+    private BigDecimal avaliableCreditLimit;
+
     public static AccountEntity fromDomain(User user, Account domain){
         return AccountEntity.builder()
             .idUser(user.getId())
             .accountNumber(domain.getAccountNumber())
             .accountDigit(domain.getAccountDigit())
             .level(domain.getLevel())
+            .avaliableCreditLimit(domain.getAvaliableCreditLimit())
         .build();
     }
 
@@ -61,6 +66,7 @@ public class AccountEntity {
             .accountNumber(accountNumber)
             .accountDigit(accountDigit)
             .level(level)
+            .avaliableCreditLimit(avaliableCreditLimit)
         .build();
     }
 

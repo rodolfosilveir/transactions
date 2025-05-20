@@ -1,5 +1,6 @@
 package br.com.pismo.transactions.domain.mock;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import br.com.pismo.transactions.domain.model.Account;
@@ -13,6 +14,7 @@ public class AccountMock {
             .accountNumber("12345")
             .accountDigit("1")
             .level("SILVER")
+            .avaliableCreditLimit(BigDecimal.valueOf(1000))
             .build();
     }
 }

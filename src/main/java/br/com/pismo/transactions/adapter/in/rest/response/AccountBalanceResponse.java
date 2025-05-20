@@ -15,7 +15,7 @@ public record AccountBalanceResponse(
     List<TransactionResponse> transactions
 ) {
 
-    public static AccountBalanceResponse fromDomain(List<Transaction> transactions) {
+    public static AccountBalanceResponse fromDomain(List<Transaction> transactions, BigDecimal creditLimit) {
         BigDecimal balance = transactions.stream()
             .map(Transaction::getAmount)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -25,7 +25,7 @@ public record AccountBalanceResponse(
             .toList();
 
         return AccountBalanceResponse.builder()
-            .balance(balance)
+            .balance(balance.add(creditLimit))
             .transactions(transactionResponses)
             .build();
     }

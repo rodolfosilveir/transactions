@@ -34,9 +34,9 @@ public class AccountService implements AccountUC {
         }
 
         try{
-            return accountPort.save(user, new Account());
+            return accountPort.save(user, new Account(request.getAvaliableCreditLimit()));
         }catch(DataIntegrityViolationException e){
-            return accountPort.save(user, new Account());
+            return accountPort.save(user, new Account(request.getAvaliableCreditLimit()));
         }        
 
     }

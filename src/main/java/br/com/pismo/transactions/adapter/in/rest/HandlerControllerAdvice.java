@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.com.pismo.transactions.adapter.in.rest.response.DefaultResponse;
 import br.com.pismo.transactions.domain.exception.NotFoundException;
+import br.com.pismo.transactions.domain.exception.UnavaliableCreditLimitException;
 import br.com.pismo.transactions.domain.exception.UserAlreadyExistsException;
 import io.swagger.v3.oas.annotations.Hidden;
 
@@ -69,6 +70,17 @@ public class HandlerControllerAdvice {
             .build();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(UnavaliableCreditLimitException.class)
+    public ResponseEntity<DefaultResponse<Void>> handleUnavaliableCreditLimitException(UnavaliableCreditLimitException ex) {
+
+        DefaultResponse<Void> response = DefaultResponse.<Void>builder()
+            .httpStatus(403)
+            .errors(List.of(ex.getMessage()))
+            .build();
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
